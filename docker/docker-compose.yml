@@ -23,4 +23,19 @@ services:
     depends_on:
       - database
     volumes:
-      - ./lumen:/var/www:z
+      - ../lumen:/var/www:z
+  nginx:
+    container_name: lumen_nginx
+    build:
+      context: ./nginx
+    volumes:
+      - ../lumen:/var/www:z
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:z
+      - ./nginx/sites/:/etc/nginx/sites-available:z
+      - ./nginx/conf.d/:/etc/nginx/conf.d:z
+      - ./logs:/var/log:z
+    depends_on:
+      - php_fpm
+    ports:
+      - "80:80"
+      - "443:443"

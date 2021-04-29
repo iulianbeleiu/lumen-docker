@@ -1,0 +1,16 @@
+version: '3.1'
+
+services:
+  database:
+    restart: always
+    image: mariadb
+    environment:
+      - MYSQL_DATABASE=lumen
+      - MYSQL_ROOT_PASSWORD=lumenrootpassword
+    ports:
+      - "3306:3306"
+    volumes:
+      #init.sql can be used to run sql queries like creating a database when database container is created
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:z
+      #mount volume for data persistent otherwise when the container is shut down the data will be lost
+      - ./database/data:/var/lib/mysql:z
